@@ -35,9 +35,9 @@ To get started with the Book Management System, follow these steps:
 ## Usage
 Upon running the application, you will be presented with a menu that allows you to choose from the following options:
 
-**01. Add a book**
-**02. Remove a book**
-**03. Update book status**
-**04. Search books**
-**05. Display books**
-**06. Exit**
+**01. Add a book**  
+**02. Remove a book**  
+**03. Update book status**  
+**04. Search books**  
+**05. Display books**  
+**06. Exit**  
