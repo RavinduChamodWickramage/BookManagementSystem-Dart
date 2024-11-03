@@ -44,7 +44,7 @@ class Book {
 
   @override
   String toString() {
-    return 'Book{Title: $title, Author: $author, ISBN: $isbn, Status: $status}';
+    return '\nBook\n Title: $title\n Author: $author\n ISBN: $isbn\n Status: $status\n';
   }
 }
 
@@ -77,7 +77,7 @@ class TextBook extends Book {
 
   @override
   String toString() {
-    return 'TextBook{Title: $title, Author: $author, ISBN: $isbn, Subject Area: $_subjectArea, Grade Level: $_gradeLevel, Status: $status}';
+    return 'TextBook\n Title: $title\n Author: $author\n ISBN: $isbn\n Subject Area: $_subjectArea\n Grade Level: $_gradeLevel\n Status: $status\n';
   }
 }
 
@@ -276,6 +276,13 @@ void updateBook(BookCollection collection) {
 
     if (bookToUpdate is TextBook) {
       stdout.write("Updating TextBook. Current details:\n$bookToUpdate\n");
+
+      String currentTitle = bookToUpdate.title;
+      String currentAuthor = bookToUpdate.author;
+      String currentISBN = bookToUpdate.isbn;
+      String currentSubjectArea = bookToUpdate.subjectArea;
+      int currentGradeLevel = bookToUpdate.gradeLevel;
+
       while (true) {
         stdout.write("Enter new title (or press Enter to keep the current): ");
         String newTitle = stdin.readLineSync() ?? '';
@@ -283,7 +290,8 @@ void updateBook(BookCollection collection) {
           bookToUpdate.title = newTitle;
           break;
         } else {
-          print("Title cannot be empty. Please enter again.");
+          bookToUpdate.title = currentTitle;
+          break;
         }
       }
 
@@ -294,7 +302,8 @@ void updateBook(BookCollection collection) {
           bookToUpdate.author = newAuthor;
           break;
         } else {
-          print("Author name cannot be empty. Please enter again.");
+          bookToUpdate.author = currentAuthor;
+          break;
         }
       }
 
@@ -305,7 +314,8 @@ void updateBook(BookCollection collection) {
           bookToUpdate.isbn = newISBN;
           break;
         } else {
-          print("ISBN cannot be empty. Please enter again.");
+          bookToUpdate.isbn = currentISBN;
+          break;
         }
       }
 
@@ -317,7 +327,8 @@ void updateBook(BookCollection collection) {
           bookToUpdate.subjectArea = newSubjectArea;
           break;
         } else {
-          print("Subject area cannot be empty. Please enter again.");
+          bookToUpdate.subjectArea = currentSubjectArea;
+          break;
         }
       }
 
@@ -336,43 +347,12 @@ void updateBook(BookCollection collection) {
                 "Invalid grade level. Please enter a value between 1 and 12.");
           }
         } else {
+          bookToUpdate.gradeLevel = currentGradeLevel;
           break;
         }
       }
     } else {
       stdout.write("Updating Book. Current details:\n$bookToUpdate\n");
-      while (true) {
-        stdout.write("Enter new title (or press Enter to keep the current): ");
-        String newTitle = stdin.readLineSync() ?? '';
-        if (newTitle.isNotEmpty) {
-          bookToUpdate.title = newTitle;
-          break;
-        } else {
-          print("Title cannot be empty. Please enter again.");
-        }
-      }
-
-      while (true) {
-        stdout.write("Enter new author (or press Enter to keep the current): ");
-        String newAuthor = stdin.readLineSync() ?? '';
-        if (newAuthor.isNotEmpty) {
-          bookToUpdate.author = newAuthor;
-          break;
-        } else {
-          print("Author name cannot be empty. Please enter again.");
-        }
-      }
-
-      while (true) {
-        stdout.write("Enter new ISBN (or press Enter to keep the current): ");
-        String newISBN = stdin.readLineSync() ?? '';
-        if (newISBN.isNotEmpty) {
-          bookToUpdate.isbn = newISBN;
-          break;
-        } else {
-          print("ISBN cannot be empty. Please enter again.");
-        }
-      }
     }
 
     stdout.write("Update status? (current: ${bookToUpdate.status}, yes/no): ");
