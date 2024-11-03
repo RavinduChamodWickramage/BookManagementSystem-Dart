@@ -177,7 +177,7 @@ void main(List<String> arguments) {
     print("\nMenu:");
     print("\t1. Add a book");
     print("\t2. Remove a book");
-    print("\t3. Update book status");
+    print("\t3. Update a book");
     print("\t4. Search books");
     print("\t5. Display books");
     print("\t0. Exit");
@@ -193,7 +193,7 @@ void main(List<String> arguments) {
         removeBook(collection);
         break;
       case 3:
-        updateBookStatus(collection);
+        updateBook(collection);
         break;
       case 4:
         searchBooks(collection);
@@ -211,30 +211,50 @@ void main(List<String> arguments) {
 }
 
 void addBook(BookCollection collection) {
-  stdout.write("Enter book title: ");
-  String title = stdin.readLineSync() ?? '';
-  stdout.write("Enter book author: ");
-  String author = stdin.readLineSync() ?? '';
-  stdout.write("Enter book ISBN: ");
-  String isbn = stdin.readLineSync() ?? '';
+  String title, author, isbn, subjectArea;
+  int gradeLevel;
+
+  while (true) {
+    stdout.write("Enter book title: ");
+    title = stdin.readLineSync() ?? '';
+    if (title.isNotEmpty) break;
+    print("Title cannot be empty. Please enter again.");
+  }
+
+  while (true) {
+    stdout.write("Enter book author: ");
+    author = stdin.readLineSync() ?? '';
+    if (author.isNotEmpty) break;
+    print("Author name cannot be empty. Please enter again.");
+  }
+
+  while (true) {
+    stdout.write("Enter book ISBN: ");
+    isbn = stdin.readLineSync() ?? '';
+    if (isbn.isNotEmpty) break;
+    print("ISBN cannot be empty. Please enter again.");
+  }
 
   stdout.write("Is this a textbook? (yes/no): ");
   String isTextBook = stdin.readLineSync() ?? '';
 
   if (isTextBook.toLowerCase() == 'yes') {
-    stdout.write("Enter subject area: ");
-    String subjectArea = stdin.readLineSync() ?? '';
-    stdout.write("Enter grade level (1-12): ");
-    int gradeLevel = int.tryParse(stdin.readLineSync() ?? '') ?? 0;
-
-    if (gradeLevel >= 1 && gradeLevel <= 12) {
-      TextBook textBook =
-          TextBook(title, author, isbn, subjectArea, gradeLevel);
-      collection.addTextBook(textBook);
-    } else {
-      stdout.write(
-          "Invalid grade level. Please enter a value between 1 and 12.\n");
+    while (true) {
+      stdout.write("Enter subject area: ");
+      subjectArea = stdin.readLineSync() ?? '';
+      if (subjectArea.isNotEmpty) break;
+      print("Subject area cannot be empty. Please enter again.");
     }
+
+    while (true) {
+      stdout.write("Enter grade level (1-12): ");
+      gradeLevel = int.tryParse(stdin.readLineSync() ?? '') ?? 0;
+      if (gradeLevel >= 1 && gradeLevel <= 12) break;
+      print("Invalid grade level. Please enter a value between 1 and 12.");
+    }
+
+    TextBook textBook = TextBook(title, author, isbn, subjectArea, gradeLevel);
+    collection.addTextBook(textBook);
   } else {
     Book book = Book(title, author, isbn);
     collection.addBook(book);
@@ -247,10 +267,130 @@ void removeBook(BookCollection collection) {
   collection.removeBook(isbnToRemove);
 }
 
-void updateBookStatus(BookCollection collection) {
-  print("Enter ISBN of the book to update status:");
+void updateBook(BookCollection collection) {
+  print("Enter ISBN of the book to update:");
   String isbnToUpdate = stdin.readLineSync() ?? '';
-  collection.updateBookStatus(isbnToUpdate);
+
+  try {
+    Book bookToUpdate = collection.searchByISBN(isbnToUpdate).first;
+
+    if (bookToUpdate is TextBook) {
+      stdout.write("Updating TextBook. Current details:\n$bookToUpdate\n");
+      while (true) {
+        stdout.write("Enter new title (or press Enter to keep the current): ");
+        String newTitle = stdin.readLineSync() ?? '';
+        if (newTitle.isNotEmpty) {
+          bookToUpdate.title = newTitle;
+          break;
+        } else {
+          print("Title cannot be empty. Please enter again.");
+        }
+      }
+
+      while (true) {
+        stdout.write("Enter new author (or press Enter to keep the current): ");
+        String newAuthor = stdin.readLineSync() ?? '';
+        if (newAuthor.isNotEmpty) {
+          bookToUpdate.author = newAuthor;
+          break;
+        } else {
+          print("Author name cannot be empty. Please enter again.");
+        }
+      }
+
+      while (true) {
+        stdout.write("Enter new ISBN (or press Enter to keep the current): ");
+        String newISBN = stdin.readLineSync() ?? '';
+        if (newISBN.isNotEmpty) {
+          bookToUpdate.isbn = newISBN;
+          break;
+        } else {
+          print("ISBN cannot be empty. Please enter again.");
+        }
+      }
+
+      while (true) {
+        stdout.write(
+            "Enter new subject area (or press Enter to keep the current): ");
+        String newSubjectArea = stdin.readLineSync() ?? '';
+        if (newSubjectArea.isNotEmpty) {
+          bookToUpdate.subjectArea = newSubjectArea;
+          break;
+        } else {
+          print("Subject area cannot be empty. Please enter again.");
+        }
+      }
+
+      while (true) {
+        stdout.write(
+            "Enter new grade level (1-12) (or press Enter to keep the current): ");
+        String gradeLevelInput = stdin.readLineSync() ?? '';
+        if (gradeLevelInput.isNotEmpty) {
+          int newGradeLevel =
+              int.tryParse(gradeLevelInput) ?? bookToUpdate.gradeLevel;
+          if (newGradeLevel >= 1 && newGradeLevel <= 12) {
+            bookToUpdate.gradeLevel = newGradeLevel;
+            break;
+          } else {
+            print(
+                "Invalid grade level. Please enter a value between 1 and 12.");
+          }
+        } else {
+          break;
+        }
+      }
+    } else {
+      stdout.write("Updating Book. Current details:\n$bookToUpdate\n");
+      while (true) {
+        stdout.write("Enter new title (or press Enter to keep the current): ");
+        String newTitle = stdin.readLineSync() ?? '';
+        if (newTitle.isNotEmpty) {
+          bookToUpdate.title = newTitle;
+          break;
+        } else {
+          print("Title cannot be empty. Please enter again.");
+        }
+      }
+
+      while (true) {
+        stdout.write("Enter new author (or press Enter to keep the current): ");
+        String newAuthor = stdin.readLineSync() ?? '';
+        if (newAuthor.isNotEmpty) {
+          bookToUpdate.author = newAuthor;
+          break;
+        } else {
+          print("Author name cannot be empty. Please enter again.");
+        }
+      }
+
+      while (true) {
+        stdout.write("Enter new ISBN (or press Enter to keep the current): ");
+        String newISBN = stdin.readLineSync() ?? '';
+        if (newISBN.isNotEmpty) {
+          bookToUpdate.isbn = newISBN;
+          break;
+        } else {
+          print("ISBN cannot be empty. Please enter again.");
+        }
+      }
+    }
+
+    stdout.write("Update status? (current: ${bookToUpdate.status}, yes/no): ");
+    String updateStatus = stdin.readLineSync() ?? '';
+    if (updateStatus.toLowerCase() == 'yes') {
+      if (bookToUpdate.status == BookStatus.available) {
+        bookToUpdate.status = BookStatus.borrowed;
+      } else {
+        bookToUpdate.status = BookStatus.available;
+      }
+      print(
+          'Updated status of book with ISBN $isbnToUpdate to ${bookToUpdate.status}.');
+    }
+
+    print("Book updated successfully:\n$bookToUpdate");
+  } catch (e) {
+    print('No book found with ISBN: $isbnToUpdate');
+  }
 }
 
 void searchBooks(BookCollection collection) {
