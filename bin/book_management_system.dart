@@ -52,10 +52,9 @@ class TextBook extends Book {
   String _subjectArea;
   int _gradeLevel;
 
-  TextBook(String title, String author, String isbn, this._subjectArea,
+  TextBook(super.title, super.author, super.isbn, this._subjectArea,
       this._gradeLevel,
-      {BookStatus status = BookStatus.available})
-      : super(title, author, isbn, status: status);
+      {super.status});
 
   String get subjectArea => _subjectArea;
   set subjectArea(String value) {
@@ -82,11 +81,11 @@ class TextBook extends Book {
 }
 
 class BookCollection {
-  List<Book> _books = [];
+  final List<Book> _books = [];
 
   void addBook(Book book) {
     _books.add(book);
-    print("${book} added successfully.");
+    print("$book added successfully.");
   }
 
   void addTextBook(TextBook textBook) {
@@ -385,7 +384,9 @@ void searchBooks(BookCollection collection) {
       if (titleResults.isEmpty) {
         print("No books found with the title containing '$searchTitle'.");
       } else {
-        titleResults.forEach((book) => print(book));
+        for (var book in titleResults) {
+          print(book);
+        }
       }
       break;
     case '2':
@@ -395,7 +396,9 @@ void searchBooks(BookCollection collection) {
       if (authorResults.isEmpty) {
         print("No books found by author '$searchAuthor'.");
       } else {
-        authorResults.forEach((book) => print(book));
+        for (var book in authorResults) {
+          print(book);
+        }
       }
       break;
     case '3':
@@ -405,7 +408,9 @@ void searchBooks(BookCollection collection) {
       if (isbnResults.isEmpty) {
         print("No book found with ISBN '$searchIsbn'.");
       } else {
-        isbnResults.forEach((book) => print(book));
+        for (var book in isbnResults) {
+          print(book);
+        }
       }
       break;
     case '4':
@@ -418,7 +423,9 @@ void searchBooks(BookCollection collection) {
       if (statusResults.isEmpty) {
         print("No books found with status '$statusInput'.");
       } else {
-        statusResults.forEach((book) => print(book));
+        for (var book in statusResults) {
+          print(book);
+        }
       }
       break;
     default:
